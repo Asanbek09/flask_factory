@@ -60,8 +60,6 @@ def handle_built_exception(e):
         return e
     return render_template("error/generic.html", title="Internal server error", e=e), 500
 
-
-
 if __name__ == '__main__':
     app.run()
     
