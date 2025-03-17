@@ -173,3 +173,48 @@ class Shipping(db.Model):
    
     def __repr__(self):
         return f"<Shipping {self.id} {self.pay_id} {self.cid} {self.did} {self.date_shipping} {self.amount}>"
+    
+class ShippingDetails(db.Model):
+   __tablename__ = 'shipping_details'
+   id = db.Column(db.Integer, db.Sequence('shipping_details_id_seq', increment=1), primary_key = True)
+   sid = db.Column(db.Integer, db.ForeignKey('shipping.id'), nullable = False)  
+   qty = db.Column(db.Integer, nullable = False)  
+   amount = db.Column(db.Float, nullable = False) 
+   
+   shipping = db.relationship('Shipping', back_populates="shipping_details")
+   
+   def __init__(self, id, sid, qty, amount):
+      self.id = id
+      self.sid = sid
+      self.qty = qty
+      self.amount = amount
+      
+   def __repr__(self):
+        return f"<Shipping {self.id} {self.sid} {self.qty} {self.amount}>"
+   
+   
+class DeliveryOfficer(db.Model):
+   __tablename__ = 'delivery_officer'
+   id = db.Column(db.Integer, primary_key = True)
+   firstname = db.Column(db.String(55), nullable = False)
+   lastname = db.Column(db.String(55), nullable = False)  
+   middlename = db.Column(db.String(55), nullable = False)
+   email = db.Column(db.String(20), nullable = False)
+   mobile = db.Column(db.String(15), nullable = False)
+   address = db.Column(db.String(100), nullable = False)
+   status = db.Column(db.String(45), nullable = False)
+
+   shipping = db.relationship('Shipping', back_populates="delivery_officer")
+   
+   def __init__(self, id, firstname, middlename, lastname, email, mobile, address, status):
+      self.id = id
+      self.firstname = firstname
+      self.lastname = lastname
+      self.middlename = middlename
+      self.email = email
+      self.mobile = mobile
+      self.address = address
+      self.status = status
+      
+   def __repr__(self):
+        return f"<Shipping {self.id} {self.firstname} {self.middlename} {self.lastname}>"
