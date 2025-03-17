@@ -87,3 +87,38 @@ class Products(db.Model):
     def __repr__(self):
         return f"<Products {self.id} {self.name} {self.code} {self.price}>"
     
+class Orders(db.Model):
+    __tablename__ = "orders"
+    id = db.Column(db.Integer, db.Sequence('orders_id_seq', increment=1), primary_key = True)
+    pid = db.Column(db.Integer, db.ForeignKey('products.id'), nullable = False)
+    order_no = db.Column(db.String, nullable = False, unique = True)
+    cid = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable = False)
+    order_date = db.Column(db.Date, nullable = False)
+
+    product = db.relationship('Products', back_populates="orders")
+    customer = db.relationship('Customer', back_populates="orders")
+    payment = db.relationship('Payment', back_populates="order", uselist=False)
+
+    def __init__(self, pid, cid, order_no, order_date, id = None):
+        self.id = id
+        self.pid = pid
+        self.cid = cid
+        self.order_no = order_no
+        self.order_date = order_date
+    
+    def __repr__(self):
+        return f"<Orders {self.id} {self.pid} {self.cid} {self.order_no} {self.order_date}>"
+    
+class PaymentType(db.Model):
+    __tablename__ = "payment_type"
+    id = db.Column(db.Integer, db.Sequence('payment_type_id_seq', increment=1), primary_key = True)
+    name = db.Column(db.String, nullable = False)
+
+    payment = db.relationship('Payment', back_populates="payment_types")
+
+    def __init__(self, name, id=None):
+        self.id = id
+        self.name = name
+
+    def __repr__(self):
+        return f"<PaymentType {self.id} {self.name}>"
