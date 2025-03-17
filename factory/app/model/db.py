@@ -46,3 +46,44 @@ class Customer(db.Model):
 
     def __repr__(self):
         return f"<Customer {self.id} {self.firstname} {self.lastname} {self.middlename}>"
+    
+class Admin(db.Model):
+    __tablename__ = 'admin'
+    id = db.Column(db.Integer, db.ForeignKey('login.id'), primary_key = True)
+    firstname = db.Column(db.String(45))
+    lastname = db.Column(db.String(45))
+    middlename = db.Column(db.String(45))
+    email = db.Column(db.String(45))
+    mobile = db.Column(db.String(45))
+
+    login = db.relationship('Login', back_populates = "admins")
+
+    def __init__(self, id, firstname, lastname, middlename, email, mobile):
+        self.id = id
+        self.firstname = firstname
+        self.lastname = lastname
+        self.middlename = middlename
+        self.email = email
+        self.mobile = mobile
+
+    def __repr__(self):
+        return f"<Admin {self.id} {self.firstname} {self.middlename} {self.lastname}>"
+    
+class Products(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, db.Sequence('product_id_seq', increment=1), primary_key = True)
+    name = db.Column(db.String(100), nullable = False)
+    code = db.Column(db.String(45), nullable = False, unique = True)
+    price = db.Column(db.Float, nullabel = False)
+
+    orders = db.relationship('Orders', back_populates="product")
+
+    def __init__(self, name, code, price, id = None):
+        self.id = id
+        self.name = name
+        self.code = code
+        self.price = price
+
+    def __repr__(self):
+        return f"<Products {self.id} {self.name} {self.code} {self.price}>"
+    
