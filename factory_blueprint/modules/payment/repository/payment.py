@@ -52,3 +52,42 @@ class PaymentRepository:
         users = self.sess.query(Payment).filter(Payment.ref_no == ref_no).one_or_none()
         app.logger.info('OrderRepository one record by reference no')
         return users
+    
+class PaymentTypeRepository:
+    def __init__(self, sess:Session):
+        self.sess = sess
+
+    def insert(self, type:PaymentType) -> bool:
+        try:
+            self.sess.add(type)
+            self.sess.commit()
+            return True
+        except Exception as e:
+            print(e)
+        return False
+    
+    def update(self, id:int, details:Dict[str, Any]) -> bool:
+        try:
+            self.sess.query(PaymentType).filter(PaymentType.id == id).update(details)
+            self.sess.commit()
+            return True
+        except Exception as e:
+            print(e)
+        return False
+    
+    def delete(self, id:int) -> bool:
+        try:
+            login = self.sess.query(PaymentType).filter(PaymentType.id == id).delete()
+            self.sess.commit()
+            return True
+        except Exception as e:
+            print(e)
+        return False
+    
+    def select_all(self) -> List[Any]:
+        users = self.sess.query(PaymentType).all()
+        return users
+    
+    def select_one(self, id:int) -> Any:
+        users = self.sess.query(PaymentType).filter(PaymentType.id == id).one_or_none()
+        return users
