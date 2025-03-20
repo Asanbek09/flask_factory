@@ -5,7 +5,7 @@ from modules.shipping.repository.delivery_officer import DeliveryOfficerReposito
 from modules.shipping.repository.shipping import ShippingRepository
 from modules.login.services.customer import get_all_cid
 from modules.payment.services.payment import get_all_payid
-from modules.shipping.services.delivery import get_all_did
+from modules.shipping.services.shipping import get_all_did
 
 from main import  app
 from modules.model.db import  DeliveryOfficer, Shipping
